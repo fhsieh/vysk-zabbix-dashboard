@@ -3,7 +3,7 @@ Vysk Zabbix Dashboard
 
 Lightweight dashboard for Zabbix network services monitoring based on Vue.js.
 
-![vysk-zabbix-dashboard](https://user-images.githubusercontent.com/9514732/32372013-73e1db3a-c0d6-11e7-96d0-4b6e8cb4a681.png)
+![Zabbix dashboard](https://user-images.githubusercontent.com/9514732/32372013-73e1db3a-c0d6-11e7-96d0-4b6e8cb4a681.png)
 
 In order to provide at-a-glance network services health monitoring, I put together a front-end dashboard based roughly on Andrew Letson's [zabbixweb](https://github.com/velinath/zabbixweb) Zabbix API library. The dashboard provides a cleaner, semi-customizable interface that Zabbix lacks, and provides near-realtime monitoring intended for use on a view-only kiosk (such as FullPageOS for Raspberry Pi).
 
