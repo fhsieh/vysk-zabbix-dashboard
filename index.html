@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="css/vendor/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/vendor/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+
+  <div id="timer">
+    <div class="spinner"></div>
+    <div class="fill"></div>
+    <div class="mask"></div>
+  </div>
+
+  <div id="dashboard" class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3">
+        <img src="images/vert-light.png" class="img-responsive center-block" style="max-width: 160px; margin-top: 80px;">
+        <h6 class="text-center">System Monitor</h6>
+      </div>
+      <div class="col-sm-4" style="padding-top: 2em;">
+        <div class="row block" v-for="host in hosts">
+          <div class="col-sm-12">
+            <h4><i class="fa fa-{{ host.icon }} text-success"></i> {{ host.label }}</h4>
+          </div>
+          <div class="col-sm-7">
+            <div v-if="typeof host.cpu != 'undefined'">
+              CPU
+              <div class="pull-right">
+                <b>{{ (host.cpu * 100).toFixed(1) }}</b>%
+                <span v-if="typeof host.proc != 'undefined'"> / <b>{{ host.proc }}</b> PROCS</span>
+              </div>
+              <div class="progress">
+                <div :class="host.cpu < 0.7 ? 'progress-bar-success' : 'progress-bar-danger'" class="progress-bar" role="progressbar" :style="{ width: (host.cpu * 100).toFixed(0) + '%' }"></div>
+              </div>
+            </div>
+            <div v-if="typeof host.vm != 'undefined'">
+              MEM
+              <div class="pull-right">
+                <b>{{ (host.vm.used / 1073741824).toFixed(1) }}</b> GB / <b>{{ (host.vm.total / 1073741824).toFixed(1) }}</b> GB
+              </div>
+              <div class="progress">
+                <div :class="host.vm.used / host.vm.total < 0.7 ? 'progress-bar-success' : 'progress-bar-danger'" class="progress-bar" role="progressbar" :style="{ width: (100 * host.vm.used / host.vm.total).toFixed(0) + '%' }"></div>
+              </div>
+            </div>
+            <div v-if="typeof host.vfs != 'undefined'" v-for="(index, disk) in host.vfs">
+              {{ index }}
+              <div class="pull-right">
+                <b>{{ (disk.free / 1073741824).toFixed(1) }}</b> GB FREE
+              </div>
+              <div class="progress">
+                <div :class="disk.used / disk.total < 0.8 ? 'progress-bar-success' : 'progress-bar-danger'" class="progress-bar progress-bar-success" role="progressbar" :style="{ width: (100 * disk.used / disk.total).toFixed(0) + '%' }"></div>
+              </div>
+            </div>
+
+
+
+            <div v-if="typeof host.toner != 'undefined'" v-for="(index, toner) in host.toner">
+              {{ index }} TONER
+              <div class="pull-right">
+                <b>{{ (100 * toner.current / toner.total).toFixed(1) }}</b>%
+              </div>
+              <div class="progress">
+                <div :class="(toner.current / toner.total) < 0.2 ? 'progress-bar-danger' : 'progress-bar-success'" class="progress-bar" role="progressbar" :style="{ width: (100 * toner.current / toner.total).toFixed(0) + '%' }"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-5">
+            <div v-if="typeof host.uptime != 'undefined'">
+              UPTIME
+              <div class="pull-right"><b>{{ (host.uptime / (24*60*60)).toFixed(1) }}</b> DAYS</div>
+            </div>
+            <div v-if="typeof host.ping != 'undefined'">
+              RESPONSE
+              <div class="pull-right"><b>{{ host.ping }}</b> MS</div>
+            </div>
+            <div v-if="typeof host.if != 'undefined'" v-for="(index, net) in host.if">
+              {{ index }}
+              <div class="pull-right">
+                <b>{{ (net.in / 8192).toFixed(1) }}</b>K <i class="fa fa-arrow-circle-down text-success"></i> &nbsp;
+                <b>{{ (net.out / 8192).toFixed(1) }}</b>K <i class="fa fa-arrow-circle-up text-success"></i>
+              </div>
+            </div>
+            <div v-if="typeof host.pagecount != 'undefined'" v-for="(index, type) in host.pagecount">
+              {{ index }}
+              <div class="pull-right"><b>{{ type }}</b> PGS</div>
+            </div>
+            <div v-if="typeof host.services != 'undefined'" v-for="(index, service) in host.services">
+              {{ index }}
+              <div class="pull-right">
+                <i :class="service == 'OK' ? 'fa-check-circle text-success' : 'fa-exclamation-circle text-danger blink'" class="fa"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-5" style="padding-top: 2em;">
+        <div class="container-fluid">
+          <div class="row block" v-for="(index, uap) in unifi">
+            <div class="col-sm-12">
+              <h4><i class="fa fa-wifi text-success"></i> {{ index }}</h4>
+            </div>
+            <div class="col-sm-5">
+              CLIENTS
+              <div class="pull-right"><b>{{ uap.users }}</b></div>
+            </div>
+            <div class="col-sm-7">
+              TRANSMIT
+              <div class="pull-right">
+                <b>{{ (uap.in / 1024).toFixed(1) }}</b>K <i class="fa fa-arrow-circle-down text-success"></i> &nbsp;
+                <b>{{ (uap.out / 1024).toFixed(1) }}</b>K <i class="fa fa-arrow-circle-up text-success"></i>
+              </div>
+            </div>
+            <div class="col-sm-12 graph" style="overflow: hidden;">
+              <img :src="uap.graph + '&' + timestamp" class="img-responsive">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/vendor/jquery.min.js"></script>
+  <script src="js/vendor/bootstrap.min.js"></script>
+  <script src="js/vendor/vue.js"></script>
+  <script src="js/zabbix.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

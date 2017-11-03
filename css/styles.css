@@ -1,0 +1,141 @@
+/*
+     RED      INDIGO   BLUE     LBLUE    GREEN    BGREY    GREY
+50   #ffebee  #e8eaf6  #e3f2fd  #e1f5fe  #e8f5e9  #eceff1  #fafafa
+100  #ffcdd2  #c5cae9  #bbdefb  #b3e5fc  #c8e6c9  #cfd8dc  #f5f5f5
+200  #ef9a9a  #9fa8da  #90caf9  #81d4fa  #a5d6a7  #b0bec5  #eeeeee
+300  #e57373  #7986cb  #64b5f6  #4fc3f7  #81c784  #90a4ae  #e0e0e0
+400  #ef5350  #5c6bc0  #42a5f5  #29b6f6  #66bb6a  #78909c  #bdbdbd
+500  #f44336  #3f51b5  #2196f3  #03a9f4  #4caf50  #607d8b  #9e9e9e
+600  #e53935  #3949ab  #1e88e5  #039be5  #43a047  #546e7a  #757575
+700  #d32f2f  #303f9f  #1976d2  #0288d1  #388e3c  #455a64  #616161
+800  #c62828  #283593  #1565c0  #0277bd  #2e7d32  #37474f  #424242
+900  #b71c1c  #1a237e  #0d47a1  #01579b  #1b5e20  #263238  #212121
+*/
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700|Exo+2:200,300,400,500,600,700);
+/* Roboto+Condensed:400,300,700|Roboto:400,300,500,100| */
+
+body {
+  background-color: #212121 !important;
+  font-family: 'Exo 2';
+  font-weight: 200;
+  font-size: 11px;
+}
+
+h4,
+h6 {
+  font-family: Montserrat;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+b {
+  font-weight: 700;
+  line-height: 0.9em;
+}
+
+.row {
+  margin-bottom: 1em;
+}
+
+.block {
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.graph {
+  background-color: #2b2b2b;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-top: #2b2b2b 10px solid;
+  border-bottom: #2b2b2b 10px solid;
+}
+
+.graph img {
+  margin-left: -20px;
+  margin-top: -25px;
+  margin-bottom: -29px;
+}
+
+
+/* CSS animation for server alerts */
+.blink {
+  animation: blink 700ms ease-out infinite;
+}
+@keyframes blink {
+  0% { opacity: 0; }
+  25% { opacity: 1; }
+  75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* CSS animation for refresh timer */
+#timer {
+  z-index: 100;
+}
+
+.spin {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.spin * {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+
+.spin .spinner {
+  left: 50%;
+  border: 3px solid #616161;
+  border-radius: 0 100% 100% 0 / 0 50% 50% 0;
+  border-left: none;
+  transform-origin: 0% 50%;
+  animation: rotate 10s linear;
+  z-index: 200;
+}
+
+.spin .fill {
+  border: 3px solid #616161;
+  border-radius: 100% 0 0 100% / 50% 0 0 50%;
+  border-right: none;
+  animation: opacity 10s steps(1, end);
+  opacity: 0;
+  z-index: 100;
+}
+
+.spin .mask {
+  left: 50%;
+  background: #212121;
+  opacity: 1;
+  animation: opacity 10s steps(1, end) reverse;
+  z-index: 300;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes opacity {
+  0% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
